@@ -1,5 +1,4 @@
-
-import React, {Component} from 'react'
+import React from 'react'
 import {ScrollView} from 'react-native'
 import {Text, Button} from 'react-native-elements'
 import {FormLabel, FormInput, FormValidationMessage} from 'react-native-elements'
@@ -53,10 +52,6 @@ class AssignmentContainer extends React.Component {
                 description: this.state.assignment.description,
                 points: newPoints,
                 widgetType:this.state.assignment.widgetType}});
-    }
-
-    updateForm(newState) {
-        this.setState(newState)
     }
 
     createAssignment(){

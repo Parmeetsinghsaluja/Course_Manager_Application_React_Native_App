@@ -40,7 +40,7 @@ export default class EssayQuestionService {
     }
 
     updateEssay(questionId, question) {
-        console.log(questionId)
+        console.log(questionId);
         return fetch(EXAM_API_URL+'/'+ questionId,
             {
                 body: JSON.stringify(question),

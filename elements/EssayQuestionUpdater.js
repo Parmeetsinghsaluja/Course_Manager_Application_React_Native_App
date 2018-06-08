@@ -3,15 +3,17 @@ import {ScrollView} from 'react-native'
 import {Text, Button} from 'react-native-elements'
 import {FormLabel, FormInput, FormValidationMessage} from 'react-native-elements'
 import EssayQuestionService from "../services/EssayQuestionService";
+import QuestionList from "../components/QuestionList"
 
-class EssayUpdater extends React.Component {
-    static navigationOptions = { title: "Essay"}
+class EssayQuestionUpdater extends React.Component {
+    static navigationOptions = { title: "Update Essay Question"};
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             examId: 1,
+            lessonId: 1,
             essayQuestion: {title: '', description: '', points: 0, type: 'Essay'}
-        }
+        };
         this.essayQuestionService = EssayQuestionService.instance;
     }
 
@@ -33,32 +35,35 @@ class EssayUpdater extends React.Component {
             questionId:questionId,
             examId: examId,
             lessonId: lessonId,
-            fbQuestion: question
+            essayQuestion: question
         })
     }
 
-    updateTitle(newTitle) {
+    updateEssayTitle(newTitle) {
         this.setState({essayQuestion: {title: newTitle,
                 description: this.state.essayQuestion.description,
                 points: this.state.essayQuestion.points,
                 type: this.state.essayQuestion.type}});
     }
 
-    updateDescription(newDescription) {
+    updateEssayDescription(newDescription) {
         this.setState({essayQuestion: {title: this.state.essayQuestion.title,
                 description: newDescription,
                 points: this.state.essayQuestion.points,
                 type: this.state.essayQuestion.type}});
     }
 
-    updatePoints(newPoints) {
+    updateEssayPoints(newPoints) {
         this.setState({essayQuestion: {title: this.state.essayQuestion.title,
                 description: this.state.essayQuestion.description,
                 points: newPoints,
                 type: this.state.essayQuestion.type}});
     }
-    updateEssay(){
+    updateEssayQuestion(){
         this.essayQuestionService.updateEssay(this.state.questionId, this.state.essayQuestion)
+            .then(() => {
+                this.props.navigation
+                    .navigate("QuestionList", {examId: this.state.examId, lessonId: this.state.lessonId});})
     }
 
 
@@ -74,24 +79,24 @@ class EssayUpdater extends React.Component {
         return(
             <ScrollView>
                 <FormLabel>Title</FormLabel>
-                <FormInput onChangeText={
-                    text => this.updateTitle(text)
+                <FormInput value ={this.state.essayQuestion.title}
+                    onChangeText={text => this.updateEssayTitle(text)
                 }/>
                 <FormValidationMessage>
                     Title is required
                 </FormValidationMessage>
 
                 <FormLabel>Description</FormLabel>
-                <FormInput onChangeText={
-                    text => this.updateDescription(text)
+                <FormInput value ={this.state.essayQuestion.description}
+                    onChangeText={text => this.updateEssayDescription(text)
                 }/>
                 <FormValidationMessage>
                     Description is required
                 </FormValidationMessage>
 
                 <FormLabel>Points</FormLabel>
-                <FormInput onChangeText={
-                    text => this.updatePoints(text)
+                <FormInput value ={(this.state.essayQuestion.points).toString()}
+                    onChangeText={text => this.updateEssayPoints(text)
                 }/>
                 <FormValidationMessage>
                     Points are required
@@ -100,14 +105,14 @@ class EssayUpdater extends React.Component {
                 <Button	backgroundColor="green"
                            color="white"
                            title="Save"
-                           onPress={() => {this.updateEssay()}}/>
+                           onPress={() => {this.updateEssayQuestion()}}/>
 
                 <Button	backgroundColor="blue"
                            color="white"
                            title="Cancel"
                            onPress={() => {
                                this.props.navigation
-                                   .navigate("QuestionList", {examId: this.state.examId})}}/>
+                                   .navigate("QuestionList", {examId: this.state.examId, lessonId: this.state.lessonId})}}/>
 
                 <Button	backgroundColor="red"
                            color="white"
@@ -126,4 +131,4 @@ class EssayUpdater extends React.Component {
     }
 }
 
-export default EssayUpdater
+export default EssayQuestionUpdater

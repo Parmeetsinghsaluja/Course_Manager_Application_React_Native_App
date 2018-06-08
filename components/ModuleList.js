@@ -3,9 +3,9 @@ import {ScrollView} from 'react-native'
 import {ListItem} from 'react-native-elements'
 
 class ModuleList extends Component {
-  static navigationOptions = {title: 'Modules'}
+  static navigationOptions = {title: 'Modules'};
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       modules: [],
       courseId: 1
@@ -15,7 +15,7 @@ class ModuleList extends Component {
     const courseId = this.props.navigation.getParam("courseId", 1);
     this.setState({
       courseId: courseId
-    })
+    });
     fetch('http://react-native-course-manager.herokuapp.com/api/course/' + courseId + '/module')
       .then(response => (response.json()))
       .then(modules => this.setState({modules: modules}))

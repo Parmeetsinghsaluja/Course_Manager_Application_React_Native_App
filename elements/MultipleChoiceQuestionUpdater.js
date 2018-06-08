@@ -6,9 +6,9 @@ import MultipleChoiceQuestionService from "../services/MultipleChoiceQuestionSer
 import QuestionList from "../components/QuestionList"
 
 class MultipleChoiceUpdater extends React.Component {
-    static navigationOptions = { title: "Multiple Choice"};
+    static navigationOptions = { title: "Update Multiple Choice Question"};
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             examId: 1,
             questionId:1,
@@ -17,7 +17,7 @@ class MultipleChoiceUpdater extends React.Component {
                                     points: 0, options: '', correctOption: 0,
                                     type: 'MultiChoice' },
             buttons: []
-        }
+        };
         this.multipleChoiceQuestionService = MultipleChoiceQuestionService.instance;
     }
 
@@ -25,8 +25,9 @@ class MultipleChoiceUpdater extends React.Component {
         this.setState({
             examId: newProps.examId,
             questionId: newProps.questionId,
-            lessonId: newProps.lessonId
-        })
+            lessonId: newProps.lessonId,
+        });
+        this.state.multipleChoiceQuestion.options.split(',');
     }
 
     componentDidMount() {
@@ -39,6 +40,7 @@ class MultipleChoiceUpdater extends React.Component {
             questionId:questionId,
             examId: examId,
             lessonId: lessonId,
+            buttons: question.options.split(','),
             multipleChoiceQuestion: question
         })
     }
@@ -90,10 +92,13 @@ class MultipleChoiceUpdater extends React.Component {
 
     updateMultiChoice(){
         this.multipleChoiceQuestionService.updateMultiChoice(this.state.questionId, this.state.multipleChoiceQuestion)
+            .then(() => {
+                this.props.navigation
+                    .navigate("QuestionList", {examId: this.state.examId, lessonId: this.state.lessonId});})
     }
 
 
-    deleteMultiChoice(){
+    deleteMultipleChoiceQuestion(){
         this.multipleChoiceQuestionService
             .deleteMultiChoice(this.state.questionId)
             .then(() => {
@@ -126,7 +131,7 @@ class MultipleChoiceUpdater extends React.Component {
 
                 <FormLabel>Points</FormLabel>
                 <FormInput
-                    value ={this.state.multipleChoiceQuestion.points}
+                    value ={(this.state.multipleChoiceQuestion.points).toString()}
                     onChangeText={
                     pointsText => this.updatePoints(pointsText)
                 }/>
@@ -152,13 +157,12 @@ class MultipleChoiceUpdater extends React.Component {
                            title="Cancel"
                            onPress={() => {
                                this.props.navigation
-                                   .navigate("QuestionList", {examId: this.state.examId})}}/>
+                                   .navigate("QuestionList", {examId: this.state.examId, lessonId: this.state.lessonId})}}/>
 
                 <Button	backgroundColor="red"
                            color="white"
-                           onPress={() => {this.deleteMultiChoice()}}
+                           onPress={() => {this.deleteMultipleChoiceQuestion()}}
                            title="Delete"/>
-
 
                 <Text h3>Preview</Text>
 

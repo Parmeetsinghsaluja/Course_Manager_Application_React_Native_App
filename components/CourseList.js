@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {ScrollView} from 'react-native'
-import {Text, ListItem} from 'react-native-elements'
+import {ListItem} from 'react-native-elements'
 
 class CourseList extends Component {
   static navigationOptions = {title: 'Courses'};

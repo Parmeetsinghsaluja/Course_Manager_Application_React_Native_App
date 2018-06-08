@@ -1,19 +1,19 @@
 import React, {Component} from 'react'
-import {Picker, View, Button, ScrollView} from 'react-native'
-import {Text, ListItem} from 'react-native-elements'
+import {Picker, Button, ScrollView} from 'react-native'
+import {ListItem} from 'react-native-elements'
 import ExamServiceClient from "../services/ExamServiceClient";
 import WidgetList from "./WidgetList";
 import MultipleChoiceQuestionEditor from "../elements/MultipleChoiceQuestionEditor";
 import TrueFalseQuestionEditor from "../elements/TrueFalseQuestionEditor";
 import EssayQuestionEditor from "../elements/EssayQuestionEditor";
 import FillInTheBlankQuestionEditor from "../elements/FillInTheBlankQuestionEditor";
-import FillInTheBlankUpdator from "../elements/FillInTheBlankUpdater";
-import MultiChoiceUpdator from "../elements/MultiChoiceUpdater";
-import TrueFalseUpdator from "../elements/TrueFalseUpdater";
-import EssayUpdator from "../elements/EssayUpdater";
+import FillInTheBlankQuestionUpdater from "../elements/FillInTheBlankQuestionUpdater";
+import MultipleChoiceQuestionUpdater from "../elements/MultipleChoiceQuestionUpdater";
+import TrueFalseQuestionUpdater from "../elements/TrueFalseQuestionUpdater";
+import EssayQuestionUpdater from "../elements/EssayQuestionUpdater";
 
 class QuestionList extends Component {
-    static navigationOptions = {title: 'Questions'}
+    static navigationOptions = {title: 'Questions'};
 
     constructor(props) {
         super(props);
@@ -33,31 +33,26 @@ class QuestionList extends Component {
         const {navigation} = this.props;
         const examId = navigation.getParam("examId");
         const lessonId = navigation.getParam("lessonId");
-        console.log(examId);
-        console.log(lessonId);
         this.setState({
             examId: examId,
             lessonId: lessonId
         });
         fetch("http://react-native-course-manager.herokuapp.com/api/exam/" + examId + "/question")
             .then(response => (response.json()))
-            .then(questions => this.setState({questions}))
-            .catch(function(error) {
-                console.log(error.message);
-            })
+            .then(questions => this.setState({questions: questions}));
     }
 
     componentWillReceiveProps(newProps) {
+        const {navigation} = this.props;
+        const examId = navigation.getParam("examId");
+        const lessonId = navigation.getParam("lessonId");
         this.setState({
-            examId: newProps.examId,
-            lessonId: newProps.lessonId
-        })
-        fetch("http://react-native-course-manager.herokuapp.com/api/exam/" + newProps.examId + "/question")
+            examId: examId,
+            lessonId: lessonId
+        });
+        fetch("http://react-native-course-manager.herokuapp.com/api/exam/" + examId + "/question")
             .then(response => (response.json()))
-            .then(questions => this.setState({questions}))
-            .catch(function(error) {
-                console.log(error.message);
-            })
+            .then(questions => this.setState({questions: questions }));
     }
 
     deleteExam() {
@@ -84,19 +79,27 @@ class QuestionList extends Component {
                     onValueChange={(itemValue) =>
                         this.setState({newQuestion: itemValue})}
                     selectedValue={this.state.newQuestion}>
-                    <Picker.Item value="MC"
+                    <Picker.Item value='MC'
                                  label="Multiple Choice" />
-                    <Picker.Item value="TF"
+                    <Picker.Item value='TF'
                                  label="True or False" />
-                    <Picker.Item value="FB"
+                    <Picker.Item value='FB'
                                  label="Fill in the Blanks" />
-                    <Picker.Item value="EQ"
+                    <Picker.Item value='EQ'
                                  label="Essay" />
                 </Picker>
-                {this.state.newQuestion === 'MC' && <MultipleChoiceQuestionEditor examId={this.state.examId}/>}
-                {this.state.newQuestion === 'TF' && <TrueFalseQuestionEditor examId={this.state.examId}/>}
-                {this.state.newQuestion === 'FB' && <FillInTheBlankQuestionEditor examId={this.state.examId}/>}
-                {this.state.newQuestion === 'EQ' && <EssayQuestionEditor examId={this.state.examId}/>}
+                {this.state.newQuestion === 'MC' && <MultipleChoiceQuestionEditor examId={this.state.examId}
+                                                                                  lessonId={this.state.lessonId}
+                                                                                  navigation={this.props.navigation}/>}
+                {this.state.newQuestion === 'TF' && <TrueFalseQuestionEditor examId={this.state.examId}
+                                                                             lessonId={this.state.lessonId}
+                                                                             navigation={this.props.navigation}/>}
+                {this.state.newQuestion === 'FB' && <FillInTheBlankQuestionEditor examId={this.state.examId}
+                                                                                  lessonId={this.state.lessonId}
+                                                                                  navigation={this.props.navigation}/>}
+                {this.state.newQuestion === 'EQ' && <EssayQuestionEditor examId={this.state.examId}
+                                                                         lessonId={this.state.lessonId}
+                                                                         navigation={this.props.navigation}/>}
 
                 {this.state.questions.map(
                     (question, index) => (
@@ -104,16 +107,32 @@ class QuestionList extends Component {
                             onPress={() => {
                                 if (question.type === "TrueFalse")
                                 {this.props.navigation
-                                        .navigate("TrueFalseUpdator", {questionId: question.id,question: question, examId: this.state.examId, lessonId: this.state.lessonId})}
-                                if (question.type === "MultiChoice")
+                                        .navigate("TrueFalseQuestionUpdater", {questionId: question.id,
+                                                                                question: question,
+                                                                                examId: this.state.examId,
+                                                                                // lessonId: this.state.lessonId
+                                        })}
+                                if (question.type === "MultipleChoice")
                                 {this.props.navigation
-                                        .navigate("MultiChoiceUpdator", {questionId: question.id,question: question, examId: this.state.examId, lessonId: this.state.lessonId})}
+                                        .navigate("MultipleChoiceQuestionUpdater", {questionId: question.id,
+                                                                                    question: question,
+                                                                                    examId: this.state.examId,
+                                                                                    // lessonId: this.state.lessonId
+                                        })}
                                 if (question.type === "Essay")
                                 {this.props.navigation
-                                    .navigate("EssayUpdator", {questionId: question.id,question: question, examId: this.state.examId, lessonId: this.state.lessonId})}
+                                    .navigate("EssayQuestionUpdater", {questionId: question.id,
+                                                                        question: question,
+                                                                         examId: this.state.examId,
+                                                                            // lessonId: this.state.lessonId
+                                        })}
                                 if (question.type === "FillInTheBlank")
                                 {this.props.navigation
-                                    .navigate("FillInTheBlankUpdator", {questionId: question.id,question: question, examId: this.state.examId, lessonId: this.state.lessonId})}
+                                    .navigate("FillInTheBlankQuestionUpdater", {questionId: question.id,
+                                                                                question: question,
+                                                                                examId: this.state.examId,
+                                                                                // lessonId: this.state.lessonId
+                                        })}
                             }}
                             key={index}
                             subtitle={question.description}

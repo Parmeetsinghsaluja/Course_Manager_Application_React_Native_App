@@ -1,17 +1,19 @@
-
 import React from 'react'
 import {ScrollView} from 'react-native'
 import {Text, Button} from 'react-native-elements'
 import {FormLabel, FormInput, FormValidationMessage,ButtonGroup} from 'react-native-elements'
 import MultipleChoiceQuestionService from "../services/MultipleChoiceQuestionServiceClient";
+import QuestionList from "../components/QuestionList"
 
 class MultipleChoiceQuestionEditor extends React.Component {
-    static navigationOptions = { title: "Multiple Choice"};
+
+    static navigationOptions = { title: "Add Multiple Choice Question"};
     constructor(props) {
         super(props);
         this.state = {
             examId: 1,
-            multipleChoiceQuestion: {title: '', description: '', points: 0, options: '', correctOption: 0, type: 'MultiChoice' },
+            lessonId:1,
+            multipleChoiceQuestion: {title: '', description: '', points: 0, options: '', correctOption: 0, type: 'MultipleChoice' },
             buttons: []
         };
         this.multipleChoiceQuestionService = MultipleChoiceQuestionService.instance;
@@ -19,18 +21,20 @@ class MultipleChoiceQuestionEditor extends React.Component {
 
     componentWillReceiveProps(newProps){
         this.setState({
-            examId: newProps.examId
+            examId: newProps.examId,
+            lessonId: newProps.lessonId
         })
     }
 
     componentDidMount() {
         const {navigation} = this.props;
         const examId = this.props.examId;
+        const lessonId = this.props.lessonId;
         this.setState({
-            examId: examId
+            examId: examId,
+            lessonId: lessonId
         })
     }
-
     updateTitle(newTitle) {
         this.setState({multipleChoiceQuestion: {title: newTitle,
                 description: this.state.multipleChoiceQuestion.description,
@@ -78,6 +82,10 @@ class MultipleChoiceQuestionEditor extends React.Component {
 
     createMultiChoice(){
         this.multipleChoiceQuestionService.createMultiChoice(this.state.examId, this.state.multipleChoiceQuestion)
+            .then(() => {
+                this.props.navigation
+                    .navigate("QuestionList", {examId: this.state.examId, lessonId: this.state.lessonId});
+            })
     }
 
     render() {
@@ -120,7 +128,10 @@ class MultipleChoiceQuestionEditor extends React.Component {
 
                 <Button	backgroundColor="red"
                            color="white"
-                           title="Cancel"/>
+                           title="Cancel"
+                           onPress={() => {
+                               this.props.navigation
+                                   .navigate("QuestionList", {examId: this.state.examId, lessonId: this.state.lessonId})}}/>
 
 
                 <Text h3>Preview</Text>

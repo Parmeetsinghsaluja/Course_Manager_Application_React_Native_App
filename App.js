@@ -2,8 +2,6 @@ import 'es6-symbol/implement';
 import React from 'react';
 import {StatusBar, ScrollView } from 'react-native';
 import FixedHeader from './elements/FixedHeader'
-import TrueFalseQuestionEditor from './elements/TrueFalseQuestionEditor'
-import MultipleChoiceQuestionEditor from './elements/MultipleChoiceQuestionEditor'
 import { createStackNavigator } from 'react-navigation'
 import {Button} from 'react-native-elements'
 import CourseList from './components/CourseList'
@@ -15,12 +13,19 @@ import WidgetEditor from "./elements/WidgetEditor";
 import AssignmentContainer from "./elements/AssignmentContainer";
 import AssignmentEditor from "./elements/AssignmentEditor";
 import ExamContainer from "./elements/ExamContainer";
-import TrueFalseUpdator from "./elements/TrueFalseUpdater";
+import TrueFalseQuestionUpdater from "./elements/TrueFalseQuestionUpdater";
+import EssayQuestionUpdater from "./elements/EssayQuestionUpdater";
+import FillInTheBlankQuestionUpdater from "./elements/FillInTheBlankQuestionUpdater";
+import MultipleChoiceQuestionUpdater from "./elements/MultipleChoiceQuestionUpdater";
+import TrueFalseQuestionEditor from "./elements/TrueFalseQuestionEditor";
+import EssayQuestionEditor from "./elements/EssayQuestionEditor";
+import FillInTheBlankQuestionEditor from "./elements/FillInTheBlankQuestionEditor";
+import MultipleChoiceQuestionEditor from "./elements/MultipleChoiceQuestionEditor";
 
 class Home extends React.Component {
     static navigationOptions = {
         title: 'Home'
-    }
+    };
     constructor(props) {
         super(props)
     }
@@ -51,9 +56,14 @@ const App = createStackNavigator({
     AssignmentContainer,
     AssignmentEditor,
     QuestionList,
-    TrueFalseUpdator,
+    TrueFalseQuestionUpdater,
     TrueFalseQuestionEditor,
-    MultipleChoiceQuestionEditor
+    MultipleChoiceQuestionEditor,
+    MultipleChoiceQuestionUpdater,
+    EssayQuestionUpdater,
+    EssayQuestionEditor,
+    FillInTheBlankQuestionUpdater,
+    FillInTheBlankQuestionEditor,
 });
 
 export default App;

@@ -1,12 +1,10 @@
-
 import React from 'react'
 import {Picker, ScrollView} from 'react-native'
 import AssignmentContainer from "./AssignmentContainer";
 import ExamContainer from "./ExamContainer";
-import AssignmentEditor from "./AssignmentEditor";
 
 export default class WidgetEditor extends React.Component {
-    static navigationOptions = { title: "Add Exam/Assignment"}
+    static navigationOptions = { title: "Add Exam/Assignment"};
     constructor(props) {
         super(props);
         this.state = {

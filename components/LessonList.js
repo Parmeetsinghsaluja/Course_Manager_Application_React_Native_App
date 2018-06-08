@@ -3,9 +3,9 @@ import {ScrollView} from 'react-native'
 import {ListItem} from 'react-native-elements'
 
 class LessonList extends Component {
-  static navigationOptions = {title: 'Lessons'}
+  static navigationOptions = {title: 'Lessons'};
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       lessons: [],
       courseId: 1,

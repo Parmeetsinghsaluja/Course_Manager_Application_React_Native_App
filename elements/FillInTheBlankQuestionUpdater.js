@@ -1,21 +1,20 @@
 import React from 'react'
 import {ScrollView} from 'react-native'
 import {Text, Button} from 'react-native-elements'
-import {FormLabel, FormInput, FormValidationMessage}
-    from 'react-native-elements'
+import {FormLabel, FormInput, FormValidationMessage} from 'react-native-elements'
 import FillInTheBlankQuestionService from "../services/FillInTheBlankQuestionServicClient";
 import QuestionList from "../components/QuestionList"
 
-class FillInTheBlankUpdater extends React.Component {
-    static navigationOptions = { title: "Fill in the Blank"};
+class FillInTheBlankQuestionUpdater extends React.Component {
+    static navigationOptions = { title: "Update Fill in the Blank Question"};
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             examId: 1,
             questionId:1,
             lessonId: 1,
-            fbQuestion: {title: '', description: '', points: 0, questionText: '', variables: '', type: 'FillInTheBlank'}
-        }
+            blanksQuestion: {title: '', description: '', points: 0, questionText: '', variables: '', type: 'FillInTheBlank'}
+        };
         this.fillInTheBlankQuestionService = FillInTheBlankQuestionService.instance;
     }
 
@@ -37,35 +36,35 @@ class FillInTheBlankUpdater extends React.Component {
             questionId:questionId,
             examId: examId,
             lessonId: lessonId,
-            fbQuestion: question
+            blanksQuestion: question
         })
     }
 
-    updateTitle(newTitle) {
-        this.setState({fbQuestion: {title: newTitle,
-                description: this.state.fbQuestion.description,
-                points: this.state.fbQuestion.points,
-                questionText: this.state.fbQuestion.questionText,
-                variables: this.state.fbQuestion.variables,
-                type: this.state.fbQuestion.type}});
+    updateBlanksTitle(newTitle) {
+        this.setState({blanksQuestion: {title: newTitle,
+                description: this.state.blanksQuestion.description,
+                points: this.state.blanksQuestion.points,
+                questionText: this.state.blanksQuestion.questionText,
+                variables: this.state.blanksQuestion.variables,
+                type: this.state.blanksQuestion.type}});
     }
 
-    updateDescription(newDescription) {
-        this.setState({fbQuestion: {title: this.state.fbQuestion.title,
+    updateBlanksDescription(newDescription) {
+        this.setState({blanksQuestion: {title: this.state.blanksQuestion.title,
                 description: newDescription,
-                points: this.state.fbQuestion.points,
-                questionText: this.state.fbQuestion.questionText,
-                variables: this.state.fbQuestion.variables,
-                type: this.state.fbQuestion.type}});
+                points: this.state.blanksQuestion.points,
+                questionText: this.state.blanksQuestion.questionText,
+                variables: this.state.blanksQuestion.variables,
+                type: this.state.blanksQuestion.type}});
     }
 
-    updatePoints(newPoints) {
-        this.setState({fbQuestion: {title: this.state.fbQuestion.title,
-                description: this.state.fbQuestion.description,
+    updateBlanksPoints(newPoints) {
+        this.setState({blanksQuestion: {title: this.state.blanksQuestion.title,
+                description: this.state.blanksQuestion.description,
                 points: newPoints,
-                questionText: this.state.fbQuestion.questionText,
-                variables: this.state.fbQuestion.variables,
-                type: this.state.fbQuestion.type}});
+                questionText: this.state.blanksQuestion.questionText,
+                variables: this.state.blanksQuestion.variables,
+                type: this.state.blanksQuestion.type}});
     }
 
     updateQuestionText(newQuestionText) {
@@ -74,31 +73,34 @@ class FillInTheBlankUpdater extends React.Component {
         newQuestionText.replace(/\[(.+?)\]/g, function($0, $1) { words.push($1) });
 
         if(words){
-            console.log(words.join())
-            this.setState({fbQuestion: {title: this.state.fbQuestion.title,
-                    description: this.state.fbQuestion.description,
-                    points: this.state.fbQuestion.points,
+            console.log(words.join());
+            this.setState({blanksQuestion: {title: this.state.blanksQuestion.title,
+                    description: this.state.blanksQuestion.description,
+                    points: this.state.blanksQuestion.points,
                     questionText: newQuestionText,
                     variables: words.join(),
-                    type: this.state.fbQuestion.type}});
+                    type: this.state.blanksQuestion.type}});
         }
         else{
-            this.setState({fbQuestion: {title: this.state.fbQuestion.title,
-                    description: this.state.fbQuestion.description,
-                    points: this.state.fbQuestion.points,
+            this.setState({blanksQuestion: {title: this.state.blanksQuestion.title,
+                    description: this.state.blanksQuestion.description,
+                    points: this.state.blanksQuestion.points,
                     questionText: newQuestionText,
-                    variables: this.state.fbQuestion.variables,
-                    type: this.state.fbQuestion.type}});
+                    variables: this.state.blanksQuestion.variables,
+                    type: this.state.blanksQuestion.type}});
         }
 
     }
 
     createFillInTheBlank(){
-        this.fillInTheBlankQuestionService.createFillInTheBlank(this.state.examId, this.state.fbQuestion)
+        this.fillInTheBlankQuestionService.createFillInTheBlank(this.state.examId, this.state.blanksQuestion)
     }
 
     updateFillInTheBlank(){
-        this.fillInTheBlankQuestionService.updateFillInTheBlank(this.state.questionId, this.state.fbQuestion)
+        this.fillInTheBlankQuestionService.updateFillInTheBlank(this.state.questionId, this.state.blanksQuestion)
+            .then(() => {
+            this.props.navigation
+                .navigate("QuestionList", {examId: this.state.examId, lessonId: this.state.lessonId});})
     }
 
 
@@ -116,9 +118,9 @@ class FillInTheBlankUpdater extends React.Component {
             <ScrollView>
                 <FormLabel>Title</FormLabel>
                 <FormInput
-                    value ={this.state.fbQuestion.title}
+                    value ={this.state.blanksQuestion.title}
                     onChangeText={
-                    text => this.updateTitle(text)
+                    text => this.updateBlanksTitle(text)
                 }/>
                 <FormValidationMessage>
                     Title is required
@@ -126,9 +128,9 @@ class FillInTheBlankUpdater extends React.Component {
 
                 <FormLabel>Description</FormLabel>
                 <FormInput
-                    value ={this.state.fbQuestion.description}
+                    value ={this.state.blanksQuestion.description}
                     onChangeText={
-                    text => this.updateDescription(text)
+                    text => this.updateBlanksDescription(text)
                 }/>
                 <FormValidationMessage>
                     Description is required
@@ -136,9 +138,9 @@ class FillInTheBlankUpdater extends React.Component {
 
                 <FormLabel>Points</FormLabel>
                 <FormInput
-                    value ={this.state.fbQuestion.points}
+                    value ={(this.state.blanksQuestion.points).toString()}
                     onChangeText={
-                    text => this.updatePoints(text)
+                    text => this.updateBlanksPoints(text)
                 }/>
                 <FormValidationMessage>
                     Points are required
@@ -146,7 +148,7 @@ class FillInTheBlankUpdater extends React.Component {
 
                 <FormLabel>Question Text</FormLabel>
                 <FormInput
-                    value ={this.state.fbQuestion.questionText}
+                    value ={this.state.blanksQuestion.questionText}
                     onChangeText={
                     text => this.updateQuestionText(text)
                 }/>
@@ -165,7 +167,7 @@ class FillInTheBlankUpdater extends React.Component {
                            title="Cancel"
                            onPress={() => {
                                this.props.navigation
-                                   .navigate("QuestionList", {examId: this.state.examId})}}/>
+                                   .navigate("QuestionList", {examId: this.state.examId, lessonId: this.state.lessonId})}}/>
 
                 <Button	backgroundColor="red"
                            color="white"
@@ -174,14 +176,14 @@ class FillInTheBlankUpdater extends React.Component {
 
                 <Text h3>Preview</Text>
 
-                <Text>{this.state.fbQuestion.questionText.replace(/\[([^\]]+)\]/g, '[         ]')}</Text>
-                <Text h2>{this.state.fbQuestion.title}</Text>
-                <Text>{this.state.fbQuestion.description}</Text>
-                <Text>{this.state.fbQuestion.points}</Text>
+                <Text>{this.state.blanksQuestion.questionText.replace(/\[([^\]]+)\]/g, '[         ]')}</Text>
+                <Text h2>{this.state.blanksQuestion.title}</Text>
+                <Text>{this.state.blanksQuestion.description}</Text>
+                <Text>{this.state.blanksQuestion.points}</Text>
 
             </ScrollView>
         )
     }
 }
 
-export default FillInTheBlankUpdater
+export default FillInTheBlankQuestionUpdater

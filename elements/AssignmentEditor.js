@@ -62,13 +62,13 @@ class AssignmentEditor extends React.Component {
                 widgetType:this.state.assignment.widgetType}});
     }
 
-    updateForm(newState) {
-        this.setState(newState)
-    }
-
     updateAssignment(){
         this.assignmentService
-            .updateAssignment(this.state.assignmentId, this.state.assignment);
+            .updateAssignment(this.state.assignmentId, this.state.assignment)
+            .then(() => {
+            this.props.navigation
+                .navigate("WidgetList", {lessonId: this.state.lessonId});
+        });
     }
 
     deleteAssignment(){

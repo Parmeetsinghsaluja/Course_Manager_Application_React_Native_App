@@ -1,4 +1,3 @@
-
 import React, {Component} from 'react'
 import {ScrollView} from 'react-native'
 import {Button, ListItem} from 'react-native-elements'
@@ -21,7 +20,7 @@ class WidgetList extends Component {
         const lessonId = navigation.getParam("lessonId");
         this.setState({
             lessonId: lessonId
-        })
+        });
         fetch("http://react-native-course-manager.herokuapp.com/api/lesson/" + lessonId + "/widget")
             .then(response => (response.json()))
             .then(widgets => this.setState({widgets}))
@@ -32,7 +31,7 @@ class WidgetList extends Component {
         const lessonId = navigation.getParam("lessonId");
         this.setState({
             lessonId: lessonId
-        })
+        });
         fetch("http://react-native-course-manager.herokuapp.com/api/lesson/" + lessonId + "/widget")
             .then(response => (response.json()))
             .then(widgets => this.setState({widgets}))

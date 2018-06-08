@@ -1,21 +1,20 @@
 import React from 'react'
 import {ScrollView} from 'react-native'
 import {Text, Button, CheckBox} from 'react-native-elements'
-import {FormLabel, FormInput, FormValidationMessage}
-    from 'react-native-elements'
+import {FormLabel, FormInput, FormValidationMessage} from 'react-native-elements'
 import TrueFalseQuestionService from "../services/TrueFalseQuestionServiceClient";
 import QuestionList from "../components/QuestionList"
 
-class TrueFalseUpdater extends React.Component {
-    static navigationOptions = { title: "True False Updater"}
+class TrueFalseQuestionUpdater extends React.Component {
+    static navigationOptions = { title: "Update True False Question"};
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             examId: 1,
             questionId: 1,
             lessonId: 1,
             trueFalseQuestion: {title: '', description: '', points: 0, isTrue: true, type: 'TrueFalse' }
-        }
+        };
         this.trueFalseQuestionService = TrueFalseQuestionService.instance;
         this.updateIsTrue=this.updateIsTrue.bind(this);
     }
@@ -75,12 +74,11 @@ class TrueFalseUpdater extends React.Component {
                 type: this.state.trueFalseQuestion.type}});
     }
 
-    updateForm(newState) {
-        this.setState(newState)
-    }
-
     updateTrueFalse(){
         this.trueFalseQuestionService.updateTrueFalse(this.state.questionId, this.state.trueFalseQuestion)
+            .then(() => {
+                this.props.navigation
+                    .navigate("QuestionList", {examId: this.state.examId, lessonId: this.state.lessonId});})
     }
 
 
@@ -88,7 +86,6 @@ class TrueFalseUpdater extends React.Component {
         this.trueFalseQuestionService
             .deleteTrueFalse(this.state.questionId)
             .then(() => {
-                console.log(this.state.lessonId)
                 this.props.navigation
                     .navigate("QuestionList", {examId: this.state.examId, lessonId: this.state.lessonId});
             })}
@@ -142,7 +139,7 @@ class TrueFalseUpdater extends React.Component {
                            title="Cancel"
                            onPress={() => {
                                this.props.navigation
-                                   .navigate("QuestionList", {examId: this.state.examId})}}/>
+                                   .navigate("QuestionList", {examId: this.state.examId, lessonId: this.state.lessonId})}}/>
 
                 <Button backgroundColor="red"
                         color="white"
@@ -160,4 +157,4 @@ class TrueFalseUpdater extends React.Component {
     }
 }
 
-export default TrueFalseUpdater;
+export default TrueFalseQuestionUpdater;

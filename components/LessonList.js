@@ -18,10 +18,7 @@ class LessonList extends Component {
     const moduleId = navigation.getParam("moduleId");
     fetch("http://react-native-course-manager.herokuapp.com/api/course/"+courseId+"/module/"+moduleId+"/lesson")
       .then(response => (response.json()))
-      .then(lessons => this.setState({lessons}))
-        .catch(function(error) {
-            console.log(error.message);
-        })
+      .then(lessons => this.setState({lessons}));
   }
   render() {
     return(

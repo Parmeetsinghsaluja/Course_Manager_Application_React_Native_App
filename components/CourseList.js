@@ -10,10 +10,7 @@ class CourseList extends Component {
       .then(response => (response.json()))
       .then(courses => {
         this.setState({courses: courses})
-      })
-        .catch(function(error) {
-            console.log(error.message);
-        });
+      });
     this.state = {
       courses: []
     }

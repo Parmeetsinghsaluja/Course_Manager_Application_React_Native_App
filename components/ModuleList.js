@@ -18,10 +18,7 @@ class ModuleList extends Component {
     });
     fetch('http://react-native-course-manager.herokuapp.com/api/course/' + courseId + '/module')
       .then(response => (response.json()))
-      .then(modules => this.setState({modules: modules}))
-        .catch(function(error) {
-            console.log(error.message);
-        })
+      .then(modules => this.setState({modules: modules}));
   }
   render() {
     return(

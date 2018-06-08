@@ -18,6 +18,7 @@ class MultipleChoiceUpdater extends React.Component {
                                     type: 'MultiChoice' },
             buttons: []
         };
+        this.updateCorrectOption=this.updateCorrectOption.bind(this);
         this.multipleChoiceQuestionService = MultipleChoiceQuestionService.instance;
     }
 
@@ -62,7 +63,7 @@ class MultipleChoiceUpdater extends React.Component {
                 correctOption: this.state.multipleChoiceQuestion.correctOption,
                 type: this.state.multipleChoiceQuestion.type}});
     }
-    updateOption (newSelectedIndex) {
+    updateCorrectOption (newSelectedIndex) {
         this.setState({multipleChoiceQuestion: {title: this.state.multipleChoiceQuestion.title,
                 description: this.state.multipleChoiceQuestion.description,
                 points: this.state.multipleChoiceQuestion.points,
@@ -172,7 +173,7 @@ class MultipleChoiceUpdater extends React.Component {
                 <Text>{this.state.multipleChoiceQuestion.options}</Text>
 
                 <ButtonGroup
-                    onPress={this.updateOption}
+                    onPress={this.updateCorrectOption}
                     selectedIndex={this.state.multipleChoiceQuestion.correctOption}
                     buttons={this.state.buttons} />
             </ScrollView>
